@@ -1,0 +1,392 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{3CD3F619-9E9C-0FD9-6525-E702EAABB644}|LogiTrack\\LogiTrack.csproj|c:\\users\\dell\\desktop\\projectcs\\logitrack\\logitrack\\controllers\\ordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3CD3F619-9E9C-0FD9-6525-E702EAABB644}|LogiTrack\\LogiTrack.csproj|solutionrelative:logitrack\\controllers\\ordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Migrations\\20260514182832_RefactoredOrderAndPayments.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:LogiTrack\\Migrations\\20260514182832_RefactoredOrderAndPayments.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3CD3F619-9E9C-0FD9-6525-E702EAABB644}|LogiTrack\\LogiTrack.csproj|c:\\users\\dell\\desktop\\projectcs\\logitrack\\logitrack\\repository\\orderrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3CD3F619-9E9C-0FD9-6525-E702EAABB644}|LogiTrack\\LogiTrack.csproj|solutionrelative:logitrack\\repository\\orderrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3CD3F619-9E9C-0FD9-6525-E702EAABB644}|LogiTrack\\LogiTrack.csproj|c:\\users\\dell\\desktop\\projectcs\\logitrack\\logitrack\\interfaces\\iorderrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3CD3F619-9E9C-0FD9-6525-E702EAABB644}|LogiTrack\\LogiTrack.csproj|solutionrelative:logitrack\\interfaces\\iorderrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3CD3F619-9E9C-0FD9-6525-E702EAABB644}|LogiTrack\\LogiTrack.csproj|c:\\users\\dell\\desktop\\projectcs\\logitrack\\logitrack\\dto\\orderdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3CD3F619-9E9C-0FD9-6525-E702EAABB644}|LogiTrack\\LogiTrack.csproj|solutionrelative:logitrack\\dto\\orderdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Migrations\\20260514175805_RefactoredOrderAndPayment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:LogiTrack\\Migrations\\20260514175805_RefactoredOrderAndPayment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3CD3F619-9E9C-0FD9-6525-E702EAABB644}|LogiTrack\\LogiTrack.csproj|c:\\users\\dell\\desktop\\projectcs\\logitrack\\logitrack\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3CD3F619-9E9C-0FD9-6525-E702EAABB644}|LogiTrack\\LogiTrack.csproj|solutionrelative:logitrack\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3CD3F619-9E9C-0FD9-6525-E702EAABB644}|LogiTrack\\LogiTrack.csproj|c:\\users\\dell\\desktop\\projectcs\\logitrack\\logitrack\\models\\orderstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3CD3F619-9E9C-0FD9-6525-E702EAABB644}|LogiTrack\\LogiTrack.csproj|solutionrelative:logitrack\\models\\orderstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3CD3F619-9E9C-0FD9-6525-E702EAABB644}|LogiTrack\\LogiTrack.csproj|c:\\users\\dell\\desktop\\projectcs\\logitrack\\logitrack\\helpers\\executiontimeattribute.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3CD3F619-9E9C-0FD9-6525-E702EAABB644}|LogiTrack\\LogiTrack.csproj|solutionrelative:logitrack\\helpers\\executiontimeattribute.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3CD3F619-9E9C-0FD9-6525-E702EAABB644}|LogiTrack\\LogiTrack.csproj|c:\\users\\dell\\desktop\\projectcs\\logitrack\\logitrack\\migrations\\20260513191710_cleanedmigration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3CD3F619-9E9C-0FD9-6525-E702EAABB644}|LogiTrack\\LogiTrack.csproj|solutionrelative:logitrack\\migrations\\20260513191710_cleanedmigration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Migrations\\20260513191211_SQLeditedAgain.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:LogiTrack\\Migrations\\20260513191211_SQLeditedAgain.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3CD3F619-9E9C-0FD9-6525-E702EAABB644}|LogiTrack\\LogiTrack.csproj|c:\\users\\dell\\desktop\\projectcs\\logitrack\\logitrack\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3CD3F619-9E9C-0FD9-6525-E702EAABB644}|LogiTrack\\LogiTrack.csproj|solutionrelative:logitrack\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Migrations\\20260513190046_SQLedited.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:LogiTrack\\Migrations\\20260513190046_SQLedited.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3CD3F619-9E9C-0FD9-6525-E702EAABB644}|LogiTrack\\LogiTrack.csproj|c:\\users\\dell\\desktop\\projectcs\\logitrack\\logitrack\\models\\orderitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3CD3F619-9E9C-0FD9-6525-E702EAABB644}|LogiTrack\\LogiTrack.csproj|solutionrelative:logitrack\\models\\orderitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3CD3F619-9E9C-0FD9-6525-E702EAABB644}|LogiTrack\\LogiTrack.csproj|c:\\users\\dell\\desktop\\projectcs\\logitrack\\logitrack\\models\\inventoryitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3CD3F619-9E9C-0FD9-6525-E702EAABB644}|LogiTrack\\LogiTrack.csproj|solutionrelative:logitrack\\models\\inventoryitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Migrations\\20260513180342_ImprovementOnOrderAction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:LogiTrack\\Migrations\\20260513180342_ImprovementOnOrderAction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Migrations\\20260513174703_ImprovementOnOrderActions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:LogiTrack\\Migrations\\20260513174703_ImprovementOnOrderActions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3CD3F619-9E9C-0FD9-6525-E702EAABB644}|LogiTrack\\LogiTrack.csproj|c:\\users\\dell\\desktop\\projectcs\\logitrack\\logitrack\\models\\appuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3CD3F619-9E9C-0FD9-6525-E702EAABB644}|LogiTrack\\LogiTrack.csproj|solutionrelative:logitrack\\models\\appuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3CD3F619-9E9C-0FD9-6525-E702EAABB644}|LogiTrack\\LogiTrack.csproj|c:\\users\\dell\\desktop\\projectcs\\logitrack\\logitrack\\services\\ijwtservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3CD3F619-9E9C-0FD9-6525-E702EAABB644}|LogiTrack\\LogiTrack.csproj|solutionrelative:logitrack\\services\\ijwtservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3CD3F619-9E9C-0FD9-6525-E702EAABB644}|LogiTrack\\LogiTrack.csproj|c:\\users\\dell\\desktop\\projectcs\\logitrack\\logitrack\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3CD3F619-9E9C-0FD9-6525-E702EAABB644}|LogiTrack\\LogiTrack.csproj|solutionrelative:logitrack\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3CD3F619-9E9C-0FD9-6525-E702EAABB644}|LogiTrack\\LogiTrack.csproj|c:\\users\\dell\\desktop\\projectcs\\logitrack\\logitrack\\logitrack.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{3CD3F619-9E9C-0FD9-6525-E702EAABB644}|LogiTrack\\LogiTrack.csproj|solutionrelative:logitrack\\logitrack.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3CD3F619-9E9C-0FD9-6525-E702EAABB644}|LogiTrack\\LogiTrack.csproj|c:\\users\\dell\\desktop\\projectcs\\logitrack\\logitrack\\helpers\\seedhelpers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3CD3F619-9E9C-0FD9-6525-E702EAABB644}|LogiTrack\\LogiTrack.csproj|solutionrelative:logitrack\\helpers\\seedhelpers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 5,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "20260514182832_RefactoredOrderAndPayments.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Migrations\\20260514182832_RefactoredOrderAndPayments.cs",
+              "RelativeDocumentMoniker": "LogiTrack\\Migrations\\20260514182832_RefactoredOrderAndPayments.cs",
+              "ToolTip": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Migrations\\20260514182832_RefactoredOrderAndPayments.cs",
+              "RelativeToolTip": "LogiTrack\\Migrations\\20260514182832_RefactoredOrderAndPayments.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-14T18:28:32.569Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "20260514175805_RefactoredOrderAndPayment.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Migrations\\20260514175805_RefactoredOrderAndPayment.cs",
+              "RelativeDocumentMoniker": "LogiTrack\\Migrations\\20260514175805_RefactoredOrderAndPayment.cs",
+              "ToolTip": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Migrations\\20260514175805_RefactoredOrderAndPayment.cs",
+              "RelativeToolTip": "LogiTrack\\Migrations\\20260514175805_RefactoredOrderAndPayment.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-14T17:58:05.7Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "OrderDTO.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Dto\\OrderDTO.cs",
+              "RelativeDocumentMoniker": "LogiTrack\\Dto\\OrderDTO.cs",
+              "ToolTip": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Dto\\OrderDTO.cs",
+              "RelativeToolTip": "LogiTrack\\Dto\\OrderDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-14T17:44:40.906Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "OrderController.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Controllers\\OrderController.cs",
+              "RelativeDocumentMoniker": "LogiTrack\\Controllers\\OrderController.cs",
+              "ToolTip": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Controllers\\OrderController.cs",
+              "RelativeToolTip": "LogiTrack\\Controllers\\OrderController.cs",
+              "ViewState": "AgIAAKMAAAAAAAAAAADwv7kAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-09T07:21:36.11Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "OrderRepository.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Repository\\OrderRepository.cs",
+              "RelativeDocumentMoniker": "LogiTrack\\Repository\\OrderRepository.cs",
+              "ToolTip": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Repository\\OrderRepository.cs",
+              "RelativeToolTip": "LogiTrack\\Repository\\OrderRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-08T19:38:57.459Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Program.cs",
+              "RelativeDocumentMoniker": "LogiTrack\\Program.cs",
+              "ToolTip": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Program.cs",
+              "RelativeToolTip": "LogiTrack\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACoAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-08T19:38:56.706Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "IOrderRepository.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Interfaces\\IOrderRepository.cs",
+              "RelativeDocumentMoniker": "LogiTrack\\Interfaces\\IOrderRepository.cs",
+              "ToolTip": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Interfaces\\IOrderRepository.cs",
+              "RelativeToolTip": "LogiTrack\\Interfaces\\IOrderRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-08T20:40:01.708Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "OrderStatus.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Models\\OrderStatus.cs",
+              "RelativeDocumentMoniker": "LogiTrack\\Models\\OrderStatus.cs",
+              "ToolTip": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Models\\OrderStatus.cs",
+              "RelativeToolTip": "LogiTrack\\Models\\OrderStatus.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-11T16:37:17.591Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "ExecutionTimeAttribute.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Helpers\\ExecutionTimeAttribute.cs",
+              "RelativeDocumentMoniker": "LogiTrack\\Helpers\\ExecutionTimeAttribute.cs",
+              "ToolTip": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Helpers\\ExecutionTimeAttribute.cs",
+              "RelativeToolTip": "LogiTrack\\Helpers\\ExecutionTimeAttribute.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAmwBMAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-09T07:19:40.797Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "20260513180342_ImprovementOnOrderAction.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Migrations\\20260513180342_ImprovementOnOrderAction.cs",
+              "RelativeDocumentMoniker": "LogiTrack\\Migrations\\20260513180342_ImprovementOnOrderAction.cs",
+              "ToolTip": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Migrations\\20260513180342_ImprovementOnOrderAction.cs",
+              "RelativeToolTip": "LogiTrack\\Migrations\\20260513180342_ImprovementOnOrderAction.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-13T18:03:42.821Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "20260513190046_SQLedited.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Migrations\\20260513190046_SQLedited.cs",
+              "RelativeDocumentMoniker": "LogiTrack\\Migrations\\20260513190046_SQLedited.cs",
+              "ToolTip": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Migrations\\20260513190046_SQLedited.cs",
+              "RelativeToolTip": "LogiTrack\\Migrations\\20260513190046_SQLedited.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-13T19:00:46.162Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "20260513191710_CleanedMigration.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Migrations\\20260513191710_CleanedMigration.cs",
+              "RelativeDocumentMoniker": "LogiTrack\\Migrations\\20260513191710_CleanedMigration.cs",
+              "ToolTip": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Migrations\\20260513191710_CleanedMigration.cs",
+              "RelativeToolTip": "LogiTrack\\Migrations\\20260513191710_CleanedMigration.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAABFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-13T19:17:10.945Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "AppDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Data\\AppDbContext.cs",
+              "RelativeDocumentMoniker": "LogiTrack\\Data\\AppDbContext.cs",
+              "ToolTip": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Data\\AppDbContext.cs",
+              "RelativeToolTip": "LogiTrack\\Data\\AppDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-13T19:03:06.604Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "20260513191211_SQLeditedAgain.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Migrations\\20260513191211_SQLeditedAgain.cs",
+              "RelativeDocumentMoniker": "LogiTrack\\Migrations\\20260513191211_SQLeditedAgain.cs",
+              "ToolTip": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Migrations\\20260513191211_SQLeditedAgain.cs",
+              "RelativeToolTip": "LogiTrack\\Migrations\\20260513191211_SQLeditedAgain.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-13T19:12:11.547Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "InventoryItem.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Models\\InventoryItem.cs",
+              "RelativeDocumentMoniker": "LogiTrack\\Models\\InventoryItem.cs",
+              "ToolTip": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Models\\InventoryItem.cs",
+              "RelativeToolTip": "LogiTrack\\Models\\InventoryItem.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-13T16:04:44.88Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "OrderItem.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Models\\OrderItem.cs",
+              "RelativeDocumentMoniker": "LogiTrack\\Models\\OrderItem.cs",
+              "ToolTip": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Models\\OrderItem.cs",
+              "RelativeToolTip": "LogiTrack\\Models\\OrderItem.cs",
+              "ViewState": "AgIAAAIAAAAAAAAAAAAUwA0AAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-13T16:04:23.882Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "20260513174703_ImprovementOnOrderActions.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Migrations\\20260513174703_ImprovementOnOrderActions.cs",
+              "RelativeDocumentMoniker": "LogiTrack\\Migrations\\20260513174703_ImprovementOnOrderActions.cs",
+              "ToolTip": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Migrations\\20260513174703_ImprovementOnOrderActions.cs",
+              "RelativeToolTip": "LogiTrack\\Migrations\\20260513174703_ImprovementOnOrderActions.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-13T17:47:03.945Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "AppUser.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Models\\AppUser.cs",
+              "RelativeDocumentMoniker": "LogiTrack\\Models\\AppUser.cs",
+              "ToolTip": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Models\\AppUser.cs",
+              "RelativeToolTip": "LogiTrack\\Models\\AppUser.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-13T15:53:37.135Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "IJwtServices.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Services\\IJwtServices.cs",
+              "RelativeDocumentMoniker": "LogiTrack\\Services\\IJwtServices.cs",
+              "ToolTip": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Services\\IJwtServices.cs",
+              "RelativeToolTip": "LogiTrack\\Services\\IJwtServices.cs",
+              "ViewState": "AgIAADEAAAAAAAAAAAAAADYAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-09T08:51:31.212Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "LogiTrack\\Controllers\\AuthController.cs",
+              "ToolTip": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "LogiTrack\\Controllers\\AuthController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-09T00:28:01.874Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "LogiTrack.csproj",
+              "DocumentMoniker": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\LogiTrack.csproj",
+              "RelativeDocumentMoniker": "LogiTrack\\LogiTrack.csproj",
+              "ToolTip": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\LogiTrack.csproj",
+              "RelativeToolTip": "LogiTrack\\LogiTrack.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-05-08T19:38:55.242Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "SeedHelpers.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Helpers\\SeedHelpers.cs",
+              "RelativeDocumentMoniker": "LogiTrack\\Helpers\\SeedHelpers.cs",
+              "ToolTip": "C:\\Users\\dell\\Desktop\\ProjectCS\\LogiTrack\\LogiTrack\\Helpers\\SeedHelpers.cs",
+              "RelativeToolTip": "LogiTrack\\Helpers\\SeedHelpers.cs",
+              "ViewState": "AgIAAEQAAAAAAAAAAAAUwFoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-09T08:59:10.064Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
