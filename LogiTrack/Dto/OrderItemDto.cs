@@ -1,4 +1,4 @@
-﻿namespace LogiTrack.DTOs
+﻿namespace LogiTrack.Dto
 {
     public class OrderItemDTO
     {

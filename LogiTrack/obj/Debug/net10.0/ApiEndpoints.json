@@ -111,6 +111,42 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "LogiTrack.Controllers.InvoicesController",
+    "Method": "GetPendingInvoices",
+    "RelativePath": "api/Invoices/pending",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LogiTrack.Controllers.InvoicesController",
+    "Method": "ProcessPending",
+    "RelativePath": "api/Invoices/process-pending",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LogiTrack.Controllers.InvoicesController",
+    "Method": "ResendInvoice",
+    "RelativePath": "api/Invoices/resend/{orderId}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "orderId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "LogiTrack.Controllers.OrderController",
     "Method": "GetAllOrders",
     "RelativePath": "api/Order",
@@ -191,6 +227,22 @@
   },
   {
     "ContainingType": "LogiTrack.Controllers.OrderController",
+    "Method": "MarkAsDelivered",
+    "RelativePath": "api/Order/{orderId}/deliver",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "orderId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LogiTrack.Controllers.OrderController",
     "Method": "AddItemToOrder",
     "RelativePath": "api/Order/{orderId}/items",
     "HttpMethod": "POST",
@@ -208,6 +260,58 @@
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LogiTrack.Controllers.OrderController",
+    "Method": "DeleteItemFromOrder",
+    "RelativePath": "api/Order/{orderId}/items/{itemName}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "orderId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "itemName",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LogiTrack.Controllers.OrderController",
+    "Method": "MakePayment",
+    "RelativePath": "api/Order/{orderId}/pay",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "orderId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "shippingFee",
+        "Type": "System.Decimal",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LogiTrack.Controllers.OrderController",
+    "Method": "AutoShipOrders",
+    "RelativePath": "api/Order/autoship",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   },
   {

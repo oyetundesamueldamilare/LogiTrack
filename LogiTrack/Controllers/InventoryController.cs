@@ -1,5 +1,4 @@
 ﻿using LogiTrack.Dto;
-using LogiTrack.DTOs;
 using LogiTrack.Helpers;
 using LogiTrack.Interfaces;
 using Microsoft.AspNetCore.Authorization;

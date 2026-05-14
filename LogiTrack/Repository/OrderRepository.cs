@@ -1,153 +1,134 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
-using LogiTrack.DTOs;
+﻿using LogiTrack.Data;
+using LogiTrack.Dto;
 using LogiTrack.Interfaces;
 using LogiTrack.Models;
-using LogiTrack.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace LogiTrack.Repository
 {
     public class OrderRepository : IOrderRepository
     {
-        private readonly ILogger _logger;
         private readonly AppDbContext _context;
         private readonly IMemoryCache _cache;
+        private readonly ILogger<OrderRepository> _logger;
 
-        public OrderRepository(ILogger<OrderRepository> logger, AppDbContext context, IMemoryCache cache)
+        public OrderRepository(AppDbContext context, IMemoryCache cache, ILogger<OrderRepository> logger)
         {
-            _logger = logger;
             _context = context;
             _cache = cache;
+            _logger = logger;
         }
 
-        private static OrderDTO MapToDto(Order order) =>
-            new OrderDTO
-            {
-                OrderId = order.OrderId,
-                AppUserId = order.AppUserId,
-                OrderDate = order.OrderDate,
-                OrderStatus = order.OrderStatus.ToString(),
-                TotalPrice = order.OrderItems.Sum(oi => oi.Quantity * oi.UnitPrice),
-                Items = order.OrderItems.Select(oi => new OrderItemDTO
-                {
-                    OrderItemId = oi.OrderItemId,
-                    ItemId = oi.ItemId,
-                    ItemName = oi.InventoryItem?.Name ?? string.Empty,
-                    Quantity = oi.Quantity,
-                    UnitPrice = oi.UnitPrice
-                }).ToList()
-            };
+        #region Retrieval Operations
 
         public async Task<IEnumerable<OrderDTO>> GetAllOrdersAsync(string role, string currentUserId)
         {
-            try
+            IQueryable<Order> query = _context.Orders
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.InventoryItem);
+
+            if (!role.Equals("Admin", StringComparison.OrdinalIgnoreCase))
             {
-                var cacheKey = $"AllOrders_{role}_{currentUserId}";
-                if (_cache.TryGetValue(cacheKey, out IEnumerable<OrderDTO> cachedOrders))
-                {
-                    return cachedOrders;
-                }
-
-                IQueryable<Order> query = _context.Orders
-                    .AsNoTracking()
-                    .Include(o => o.OrderItems)
-                        .ThenInclude(oi => oi.InventoryItem);
-
-                if (role.Equals("Customer", StringComparison.OrdinalIgnoreCase))
-                {
-                    query = query.Where(o => o.AppUserId == currentUserId);
-                }
-
-                var orders = await query.ToListAsync();
-                var orderDtos = orders.Select(MapToDto).ToList();
-
-                _cache.Set(cacheKey, orderDtos, TimeSpan.FromMinutes(5));
-                return orderDtos;
+                query = query.Where(o => o.AppUserId == currentUserId);
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error fetching orders");
-                throw;
-            }
+
+            var orders = await query.ToListAsync();
+            return orders.Select(MapToDto);
         }
 
         public async Task<OrderDTO?> GetOrderByIdAsync(int id, string role, string currentUserId)
         {
-            try
-            {
-                var cacheKey = $"Order_{id}_{role}_{currentUserId}";
-                if (_cache.TryGetValue(cacheKey, out OrderDTO cachedOrder))
-                {
-                    return cachedOrder;
-                }
+            var order = await _context.Orders
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.InventoryItem)
+                .FirstOrDefaultAsync(o => o.OrderId == id);
 
-                IQueryable<Order> query = _context.Orders
-                    .AsNoTracking()
-                    .Include(o => o.OrderItems)
-                        .ThenInclude(oi => oi.InventoryItem)
-                    .Where(o => o.OrderId == id);
+            if (order == null) return null;
 
-                if (role.Equals("Customer", StringComparison.OrdinalIgnoreCase))
-                {
-                    query = query.Where(o => o.AppUserId == currentUserId);
-                }
+            if (!role.Equals("Admin", StringComparison.OrdinalIgnoreCase) && order.AppUserId != currentUserId)
+                throw new UnauthorizedAccessException("You do not have permission to view this order.");
 
-                var order = await query.FirstOrDefaultAsync();
-                if (order == null) return null;
-
-                var orderDto = MapToDto(order);
-                _cache.Set(cacheKey, orderDto, TimeSpan.FromMinutes(10));
-                return orderDto;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Error fetching order with ID {id}");
-                throw;
-            }
+            return MapToDto(order);
         }
+
+        #endregion
+
+        #region Create, Update, Delete Operations
 
         public async Task AddOrderAsync(OrderDTO orderDto)
         {
-            try
+            // 1. Initialize the Domain Model
+            var order = new Order
             {
-                var orderItems = new List<OrderItem>();
-                foreach (var i in orderDto.Items)
-                {
-                    var inventoryItem = await _context.InventoryItems
-                        .FirstOrDefaultAsync(ii => ii.Name == i.ItemName);
+                AppUserId = orderDto.AppUserId,
+                OrderDate = DateTime.UtcNow,
+                OrderStatus = OrderStatus.Pending,
+                OrderItems = new List<OrderItem>()
+            };
 
-                    if (inventoryItem == null)
-                        throw new KeyNotFoundException($"Inventory item '{i.ItemName}' not found");
-
-                    orderItems.Add(new OrderItem
-                    {
-                        ItemId = inventoryItem.ItemId,
-                        Quantity = i.Quantity,
-                        UnitPrice = inventoryItem.UnitPrice
-                    });
-                }
-
-                var order = new Order
-                {
-                    AppUserId = orderDto.AppUserId,
-                    OrderDate = orderDto.OrderDate,
-                    OrderStatus = Enum.TryParse<OrderStatus>(orderDto.OrderStatus, out var status) ? status : OrderStatus.Pending,
-                    OrderItems = orderItems,
-                    TotalPrice = orderItems.Sum(oi => oi.Quantity * oi.UnitPrice)
-                };
-
-                _context.Orders.Add(order);
-                await _context.SaveChangesAsync();
-
-                _cache.Remove("AllOrders_Admin_all");
-                _cache.Remove($"AllOrders_Customer_{order.AppUserId}");
-            }
-            catch (Exception ex)
+            // 2. Resolve Items and Lock Prices
+            foreach (var itemDto in orderDto.Items)
             {
-                _logger.LogError(ex, "Error adding order");
-                throw;
+                var inventoryItem = await _context.InventoryItems
+                    .FirstOrDefaultAsync(i => i.Name == itemDto.ItemName);
+
+                if (inventoryItem == null)
+                    throw new KeyNotFoundException($"Product '{itemDto.ItemName}' not found in inventory.");
+
+                order.OrderItems.Add(new OrderItem
+                {
+                    ItemId = inventoryItem.ItemId,
+                    Quantity = itemDto.Quantity,
+                    UnitPrice = inventoryItem.UnitPrice // Use current DB price for security
+                });
             }
+
+            // 3. Final Total Calculation
+            order.TotalPrice = order.OrderItems.Sum(oi => oi.Quantity * oi.UnitPrice);
+
+            _context.Orders.Add(order);
+            await _context.SaveChangesAsync();
+
+            InvalidateOrderCaches(order.AppUserId, order.OrderId);
         }
+
+        public async Task UpdateOrderAsync(int id, OrderDTO orderDto, string role, string currentUserId)
+        {
+            var order = await _context.Orders
+                .Include(o => o.OrderItems)
+                .FirstOrDefaultAsync(o => o.OrderId == id);
+
+            if (order == null) throw new KeyNotFoundException("Order not found");
+
+            if (!role.Equals("Admin", StringComparison.OrdinalIgnoreCase) && order.AppUserId != currentUserId)
+                throw new UnauthorizedAccessException();
+
+            // We only allow updating the date or items from the DTO; Status and Price are handled via Workflow
+            order.OrderDate = orderDto.OrderDate;
+
+            // Logic for updating items can be complex (add/remove/update quantity)
+            // For now, we update the basic order metadata
+            await _context.SaveChangesAsync();
+            InvalidateOrderCaches(order.AppUserId, id);
+        }
+
+        public async Task DeleteOrderAsync(int id, string role, string currentUserId)
+        {
+            var order = await _context.Orders.FindAsync(id);
+            if (order == null) throw new KeyNotFoundException("Order not found");
+
+            if (!role.Equals("Admin", StringComparison.OrdinalIgnoreCase) && order.AppUserId != currentUserId)
+                throw new UnauthorizedAccessException();
+
+            _context.Orders.Remove(order);
+            await _context.SaveChangesAsync();
+            InvalidateOrderCaches(order.AppUserId, id);
+        }
+
+        #endregion
+
+        #region Order Item Management
 
         public async Task AddItemToOrderAsync(int orderId, OrderItemDTO itemDto, string role, string currentUserId)
         {
@@ -155,103 +136,126 @@ namespace LogiTrack.Repository
                 .Include(o => o.OrderItems)
                 .FirstOrDefaultAsync(o => o.OrderId == orderId);
 
-            if (order == null) throw new KeyNotFoundException($"Order {orderId} not found");
+            if (order == null) throw new KeyNotFoundException("Order not found");
 
-            if (role.Equals("Customer", StringComparison.OrdinalIgnoreCase) && order.AppUserId != currentUserId)
-                throw new UnauthorizedAccessException("Customers can only modify their own orders");
+            if (!role.Equals("Admin", StringComparison.OrdinalIgnoreCase) && order.AppUserId != currentUserId)
+                throw new UnauthorizedAccessException();
 
             var inventoryItem = await _context.InventoryItems
-                .FirstOrDefaultAsync(ii => ii.Name == itemDto.ItemName);
+                .FirstOrDefaultAsync(i => i.Name == itemDto.ItemName);
 
-            if (inventoryItem == null)
-                throw new KeyNotFoundException($"Inventory item '{itemDto.ItemName}' not found");
+            if (inventoryItem == null) throw new KeyNotFoundException("Inventory item not found.");
 
-            order.OrderItems.Add(new OrderItem
+            var newItem = new OrderItem
             {
+                OrderId = orderId,
                 ItemId = inventoryItem.ItemId,
                 Quantity = itemDto.Quantity,
                 UnitPrice = inventoryItem.UnitPrice
-            });
+            };
 
+            order.OrderItems.Add(newItem);
             order.TotalPrice = order.OrderItems.Sum(oi => oi.Quantity * oi.UnitPrice);
+
+            await _context.SaveChangesAsync();
+            InvalidateOrderCaches(order.AppUserId, orderId);
+        }
+
+        public async Task DeleteItemFromOrderAsync(int orderId, string itemName, string role, string currentUserId)
+        {
+            var order = await _context.Orders
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.InventoryItem)
+                .FirstOrDefaultAsync(o => o.OrderId == orderId);
+
+            if (order == null) throw new KeyNotFoundException("Order not found");
+
+            if (!role.Equals("Admin", StringComparison.OrdinalIgnoreCase) && order.AppUserId != currentUserId)
+                throw new UnauthorizedAccessException();
+
+            var item = order.OrderItems.FirstOrDefault(oi => oi.InventoryItem.Name == itemName);
+            if (item == null) throw new KeyNotFoundException("Item not found in order");
+
+            _context.OrderItems.Remove(item);
+            order.TotalPrice = order.OrderItems.Sum(oi => oi.Quantity * oi.UnitPrice);
+
+            await _context.SaveChangesAsync();
+            InvalidateOrderCaches(order.AppUserId, orderId);
+        }
+
+        #endregion
+
+        #region Workflow Operations
+
+        public async Task MakePaymentAsync(int orderId, decimal shippingFee, string userId, DateTime paymentDate)
+        {
+            var order = await _context.Orders.FirstOrDefaultAsync(o => o.OrderId == orderId && o.AppUserId == userId);
+            if (order == null) throw new KeyNotFoundException("Order not found.");
+
+            order.OrderStatus = OrderStatus.PaymentConfirmed;
+            order.PaymentDate = paymentDate;
+            order.TotalPrice += shippingFee;
+
+            await _context.SaveChangesAsync();
+            InvalidateOrderCaches(userId, orderId);
+        }
+
+        public async Task AutoShipOrdersAsync(DateTime paymentDate)
+        {
+            var ordersToShip = await _context.Orders
+                .Where(o => o.OrderStatus == OrderStatus.PaymentConfirmed && o.PaymentDate <= paymentDate)
+                .ToListAsync();
+
+            foreach (var order in ordersToShip)
+            {
+                order.OrderStatus = OrderStatus.Shipped;
+            }
 
             await _context.SaveChangesAsync();
         }
 
-
-        public async Task UpdateOrderAsync(int id, OrderDTO orderDto, string role, string currentUserId)
+        public async Task MarkAsDeliveredAsync(int orderId, string role, DateTime deliveryDate)
         {
-            try
-            {
-                var existingOrder = await _context.Orders
-                    .Include(o => o.OrderItems)
-                    .FirstOrDefaultAsync(o => o.OrderId == id);
+            if (!role.Equals("Admin", StringComparison.OrdinalIgnoreCase))
+                throw new UnauthorizedAccessException("Only admins can mark orders as delivered.");
 
-                if (existingOrder == null)
-                    throw new KeyNotFoundException($"Order with ID {id} not found");
+            var order = await _context.Orders.FindAsync(orderId);
+            if (order == null) throw new KeyNotFoundException("Order not found");
 
-                if (role.Equals("Customer", StringComparison.OrdinalIgnoreCase) && existingOrder.AppUserId != currentUserId)
-                    throw new UnauthorizedAccessException("Customers can only update their own orders");
+            order.OrderStatus = OrderStatus.Delivered;
+            order.DeliveryDate = deliveryDate;
 
-                existingOrder.OrderDate = orderDto.OrderDate;
-                existingOrder.OrderStatus = Enum.TryParse<OrderStatus>(orderDto.OrderStatus, out var status) ? status : existingOrder.OrderStatus;
-
-                existingOrder.OrderItems.Clear();
-                foreach (var i in orderDto.Items)
-                {
-                    var inventoryItem = await _context.InventoryItems
-                        .FirstOrDefaultAsync(ii => ii.Name == i.ItemName);
-
-                    if (inventoryItem == null)
-                        throw new KeyNotFoundException($"Inventory item '{i.ItemName}' not found");
-
-                    existingOrder.OrderItems.Add(new OrderItem
-                    {
-                        ItemId = inventoryItem.ItemId,
-                        Quantity = i.Quantity,
-                        UnitPrice = inventoryItem.UnitPrice
-                    });
-                }
-
-                existingOrder.TotalPrice = existingOrder.OrderItems.Sum(oi => oi.Quantity * oi.UnitPrice);
-
-                await _context.SaveChangesAsync();
-
-                _cache.Remove("AllOrders_Admin_all");
-                _cache.Remove($"AllOrders_Customer_{existingOrder.AppUserId}");
-                _cache.Remove($"Order_{id}_Admin_all");
-                _cache.Remove($"Order_{id}_Customer_{existingOrder.AppUserId}");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Error updating order with ID {id}");
-                throw;
-            }
+            await _context.SaveChangesAsync();
+            InvalidateOrderCaches(order.AppUserId, orderId);
         }
 
-        public async Task DeleteOrderAsync(int id, string role, string currentUserId)
+        #endregion
+
+        #region Private Helpers
+
+        private void InvalidateOrderCaches(string userId, int orderId)
         {
-            try
-            {
-                var order = await _context.Orders.FindAsync(id);
-                if (order == null) throw new KeyNotFoundException($"Order with ID {id} not found");
-
-                if (role.Equals("Customer", StringComparison.OrdinalIgnoreCase) && order.AppUserId != currentUserId)
-                    throw new UnauthorizedAccessException("Customers can only delete their own orders");
-
-                _context.Orders.Remove(order);
-                await _context.SaveChangesAsync();
-
-                _cache.Remove("AllOrders_Admin_all");
-                _cache.Remove($"AllOrders_Customer_{order.AppUserId}");
-                _cache.Remove($"Order_{id}_Admin_all");
-                _cache.Remove($"Order_{id}_Customer_{order.AppUserId}");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Error deleting order with ID {id}");
-                throw;
-            }
+            _cache.Remove($"orders_user_{userId}");
+            _cache.Remove($"order_details_{orderId}");
+            _logger.LogInformation("Cache invalidated for User {UserId} and Order {OrderId}", userId, orderId);
         }
+
+        private static OrderDTO MapToDto(Order order) =>
+             new OrderDTO
+             {
+                 OrderId = order.OrderId,
+                 AppUserId = order.AppUserId,
+                 OrderDate = order.OrderDate,
+                 OrderStatus = order.OrderStatus.ToString(),
+                 TotalPrice = order.TotalPrice,
+                 Items = order.OrderItems.Select(oi => new OrderItemDTO
+                 {
+                     OrderItemId = oi.OrderItemId,
+                     ItemName = oi.InventoryItem?.Name ?? "Unknown Item",
+                     Quantity = oi.Quantity,
+                     UnitPrice = oi.UnitPrice
+                 }).ToList()
+             };
+        #endregion
     }
 }

@@ -1,3 +1,4 @@
+using LogiTrack.BackgroundServices;
 using LogiTrack.Data;
 using LogiTrack.Helpers;
 using LogiTrack.Interfaces;
@@ -27,6 +28,11 @@ builder.Services.AddMemoryCache();
 builder.Services.AddIdentity<AppUser, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
+
+//Services
+builder.Services.AddScoped<IInvoiceService, InvoiceService>();
+builder.Services.AddHostedService<InvoiceBackgroundWorker>();
+
 
 // --- Dependency Injection for Repositories ---
 builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
