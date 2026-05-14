@@ -51,7 +51,7 @@
     "Parameters": [
       {
         "Name": "itemDto",
-        "Type": "LogiTrack.Dto.InventoryItemDto",
+        "Type": "LogiTrack.Dto.InventoryItemDTO",
         "IsRequired": true
       }
     ],
@@ -88,7 +88,7 @@
       },
       {
         "Name": "itemDto",
-        "Type": "LogiTrack.Dto.InventoryItemDto",
+        "Type": "LogiTrack.Dto.InventoryItemDTO",
         "IsRequired": true
       }
     ],
@@ -129,8 +129,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "orderDto",
-        "Type": "LogiTrack.Dto.OrderDto",
+        "Name": "orderCreateDto",
+        "Type": "LogiTrack.Dto.OrderCreateDTO",
         "IsRequired": true
       }
     ],
@@ -166,8 +166,8 @@
         "IsRequired": true
       },
       {
-        "Name": "orderDto",
-        "Type": "LogiTrack.Dto.OrderDto",
+        "Name": "orderCreateDto",
+        "Type": "LogiTrack.Dto.OrderCreateDTO",
         "IsRequired": true
       }
     ],
@@ -184,6 +184,27 @@
       {
         "Name": "id",
         "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LogiTrack.Controllers.OrderController",
+    "Method": "AddItemToOrder",
+    "RelativePath": "api/Order/{orderId}/items",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "orderId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "itemCreateDto",
+        "Type": "LogiTrack.Dto.OrderItemCreateDTO",
         "IsRequired": true
       }
     ],

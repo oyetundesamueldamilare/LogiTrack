@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
-using LogiTrack.Dto;
+using LogiTrack.DTOs;
 using LogiTrack.Interfaces;
 using LogiTrack.Models;
 using LogiTrack.Data;
@@ -20,40 +20,48 @@ namespace LogiTrack.Repository
             _cache = cache;
         }
 
-        public async Task<IEnumerable<OrderDto>> GetAllOrdersAsync()
+        private static OrderDTO MapToDto(Order order) =>
+            new OrderDTO
+            {
+                OrderId = order.OrderId,
+                AppUserId = order.AppUserId,
+                OrderDate = order.OrderDate,
+                OrderStatus = order.OrderStatus.ToString(),
+                TotalPrice = order.OrderItems.Sum(oi => oi.Quantity * oi.UnitPrice),
+                Items = order.OrderItems.Select(oi => new OrderItemDTO
+                {
+                    OrderItemId = oi.OrderItemId,
+                    ItemId = oi.ItemId,
+                    ItemName = oi.InventoryItem?.Name ?? string.Empty,
+                    Quantity = oi.Quantity,
+                    UnitPrice = oi.UnitPrice
+                }).ToList()
+            };
+
+        public async Task<IEnumerable<OrderDTO>> GetAllOrdersAsync(string role, string currentUserId)
         {
             try
             {
-                if (_cache.TryGetValue("AllOrders", out IEnumerable<OrderDto> cachedOrders))
+                var cacheKey = $"AllOrders_{role}_{currentUserId}";
+                if (_cache.TryGetValue(cacheKey, out IEnumerable<OrderDTO> cachedOrders))
                 {
                     return cachedOrders;
                 }
 
-                // Step 1: Load entities with includes
-                var orders = await _context.Orders
+                IQueryable<Order> query = _context.Orders
                     .AsNoTracking()
                     .Include(o => o.OrderItems)
-                        .ThenInclude(oi => oi.InventoryItem)
-                    .ToListAsync();
+                        .ThenInclude(oi => oi.InventoryItem);
 
-                // Step 2: Map to DTOs in memory
-                var orderDtos = orders.Select(order => new OrderDto
+                if (role.Equals("Customer", StringComparison.OrdinalIgnoreCase))
                 {
-                    OrderId = order.OrderId,
-                    CustomerName = order.CustomerName,
-                    OrderDate = order.OrderDate,
-                    OrderStatus = order.OrderStatus,
-                    OrderItems = (order.OrderItems ?? Enumerable.Empty<OrderItem>())
-                        .Select(oi => new OrderItemDto
-                        {
-                            OrderItemId = oi.OrderItemId,
-                            ItemId = oi.ItemId,
-                            ItemName = oi.InventoryItem?.Name ?? string.Empty,
-                            Quantity = oi.Quantity
-                        }).ToList()
-                }).ToList();
+                    query = query.Where(o => o.AppUserId == currentUserId);
+                }
 
-                _cache.Set("AllOrders", orderDtos, TimeSpan.FromMinutes(5));
+                var orders = await query.ToListAsync();
+                var orderDtos = orders.Select(MapToDto).ToList();
+
+                _cache.Set(cacheKey, orderDtos, TimeSpan.FromMinutes(5));
                 return orderDtos;
             }
             catch (Exception ex)
@@ -63,41 +71,31 @@ namespace LogiTrack.Repository
             }
         }
 
-
-        public async Task<OrderDto?> GetOrderByIdAsync(int id)
+        public async Task<OrderDTO?> GetOrderByIdAsync(int id, string role, string currentUserId)
         {
             try
             {
-                var cacheKey = $"Order_{id}";
-                if (_cache.TryGetValue(cacheKey, out OrderDto cachedOrder))
+                var cacheKey = $"Order_{id}_{role}_{currentUserId}";
+                if (_cache.TryGetValue(cacheKey, out OrderDTO cachedOrder))
                 {
                     return cachedOrder;
                 }
 
-                var order = await _context.Orders
-                    .AsNoTracking() // Query optimization
+                IQueryable<Order> query = _context.Orders
+                    .AsNoTracking()
                     .Include(o => o.OrderItems)
-                    .ThenInclude(oi => oi.InventoryItem)
-                    .FirstOrDefaultAsync(o => o.OrderId == id);
+                        .ThenInclude(oi => oi.InventoryItem)
+                    .Where(o => o.OrderId == id);
 
+                if (role.Equals("Customer", StringComparison.OrdinalIgnoreCase))
+                {
+                    query = query.Where(o => o.AppUserId == currentUserId);
+                }
+
+                var order = await query.FirstOrDefaultAsync();
                 if (order == null) return null;
 
-                var orderDto = new OrderDto
-                {
-                    OrderId = order.OrderId,
-                    CustomerName = order.CustomerName,
-                    OrderDate = order.OrderDate,
-                    OrderStatus = order.OrderStatus,
-                    OrderItems = (order.OrderItems ?? Enumerable.Empty<OrderItem>())
-                        .Select(oi => new OrderItemDto
-                        {
-                            OrderItemId = oi.OrderItemId,
-                            ItemId = oi.ItemId,
-                            ItemName = oi.InventoryItem?.Name ?? string.Empty,
-                            Quantity = oi.Quantity,
-                        }).ToList()
-                };
-
+                var orderDto = MapToDto(order);
                 _cache.Set(cacheKey, orderDto, TimeSpan.FromMinutes(10));
                 return orderDto;
             }
@@ -108,28 +106,41 @@ namespace LogiTrack.Repository
             }
         }
 
-        public async Task AddOrderAsync(OrderDto orderDto)
+        public async Task AddOrderAsync(OrderDTO orderDto)
         {
             try
             {
+                var orderItems = new List<OrderItem>();
+                foreach (var i in orderDto.Items)
+                {
+                    var inventoryItem = await _context.InventoryItems
+                        .FirstOrDefaultAsync(ii => ii.Name == i.ItemName);
+
+                    if (inventoryItem == null)
+                        throw new KeyNotFoundException($"Inventory item '{i.ItemName}' not found");
+
+                    orderItems.Add(new OrderItem
+                    {
+                        ItemId = inventoryItem.ItemId,
+                        Quantity = i.Quantity,
+                        UnitPrice = inventoryItem.UnitPrice
+                    });
+                }
+
                 var order = new Order
                 {
-                    CustomerName = orderDto.CustomerName,
+                    AppUserId = orderDto.AppUserId,
                     OrderDate = orderDto.OrderDate,
-                    OrderStatus = orderDto.OrderStatus,
-                    OrderItems = (orderDto.OrderItems ?? Enumerable.Empty<OrderItemDto>())
-                        .Select(oi => new OrderItem
-                        {
-                            ItemId = oi.ItemId,
-                            Quantity = oi.Quantity
-                        }).ToList()
+                    OrderStatus = Enum.TryParse<OrderStatus>(orderDto.OrderStatus, out var status) ? status : OrderStatus.Pending,
+                    OrderItems = orderItems,
+                    TotalPrice = orderItems.Sum(oi => oi.Quantity * oi.UnitPrice)
                 };
 
                 _context.Orders.Add(order);
                 await _context.SaveChangesAsync();
 
-                // Invalidate cache
-                _cache.Remove("AllOrders");
+                _cache.Remove("AllOrders_Admin_all");
+                _cache.Remove($"AllOrders_Customer_{order.AppUserId}");
             }
             catch (Exception ex)
             {
@@ -138,7 +149,37 @@ namespace LogiTrack.Repository
             }
         }
 
-        public async Task UpdateOrderAsync(int id, OrderDto orderDto)
+        public async Task AddItemToOrderAsync(int orderId, OrderItemDTO itemDto, string role, string currentUserId)
+        {
+            var order = await _context.Orders
+                .Include(o => o.OrderItems)
+                .FirstOrDefaultAsync(o => o.OrderId == orderId);
+
+            if (order == null) throw new KeyNotFoundException($"Order {orderId} not found");
+
+            if (role.Equals("Customer", StringComparison.OrdinalIgnoreCase) && order.AppUserId != currentUserId)
+                throw new UnauthorizedAccessException("Customers can only modify their own orders");
+
+            var inventoryItem = await _context.InventoryItems
+                .FirstOrDefaultAsync(ii => ii.Name == itemDto.ItemName);
+
+            if (inventoryItem == null)
+                throw new KeyNotFoundException($"Inventory item '{itemDto.ItemName}' not found");
+
+            order.OrderItems.Add(new OrderItem
+            {
+                ItemId = inventoryItem.ItemId,
+                Quantity = itemDto.Quantity,
+                UnitPrice = inventoryItem.UnitPrice
+            });
+
+            order.TotalPrice = order.OrderItems.Sum(oi => oi.Quantity * oi.UnitPrice);
+
+            await _context.SaveChangesAsync();
+        }
+
+
+        public async Task UpdateOrderAsync(int id, OrderDTO orderDto, string role, string currentUserId)
         {
             try
             {
@@ -149,26 +190,37 @@ namespace LogiTrack.Repository
                 if (existingOrder == null)
                     throw new KeyNotFoundException($"Order with ID {id} not found");
 
-                existingOrder.CustomerName = orderDto.CustomerName;
+                if (role.Equals("Customer", StringComparison.OrdinalIgnoreCase) && existingOrder.AppUserId != currentUserId)
+                    throw new UnauthorizedAccessException("Customers can only update their own orders");
+
                 existingOrder.OrderDate = orderDto.OrderDate;
-                existingOrder.OrderStatus = orderDto.OrderStatus;
+                existingOrder.OrderStatus = Enum.TryParse<OrderStatus>(orderDto.OrderStatus, out var status) ? status : existingOrder.OrderStatus;
 
-                if (existingOrder.OrderItems != null)
-                    existingOrder.OrderItems.Clear();
+                existingOrder.OrderItems.Clear();
+                foreach (var i in orderDto.Items)
+                {
+                    var inventoryItem = await _context.InventoryItems
+                        .FirstOrDefaultAsync(ii => ii.Name == i.ItemName);
 
-                existingOrder.OrderItems = (orderDto.OrderItems ?? Enumerable.Empty<OrderItemDto>())
-                    .Select(oi => new OrderItem
+                    if (inventoryItem == null)
+                        throw new KeyNotFoundException($"Inventory item '{i.ItemName}' not found");
+
+                    existingOrder.OrderItems.Add(new OrderItem
                     {
-                        ItemId = oi.ItemId,
-                        Quantity = oi.Quantity
-                    }).ToList();
+                        ItemId = inventoryItem.ItemId,
+                        Quantity = i.Quantity,
+                        UnitPrice = inventoryItem.UnitPrice
+                    });
+                }
 
-                _context.Orders.Update(existingOrder);
+                existingOrder.TotalPrice = existingOrder.OrderItems.Sum(oi => oi.Quantity * oi.UnitPrice);
+
                 await _context.SaveChangesAsync();
 
-                // Invalidate cache
-                _cache.Remove("AllOrders");
-                _cache.Remove($"Order_{id}");
+                _cache.Remove("AllOrders_Admin_all");
+                _cache.Remove($"AllOrders_Customer_{existingOrder.AppUserId}");
+                _cache.Remove($"Order_{id}_Admin_all");
+                _cache.Remove($"Order_{id}_Customer_{existingOrder.AppUserId}");
             }
             catch (Exception ex)
             {
@@ -177,19 +229,23 @@ namespace LogiTrack.Repository
             }
         }
 
-        public async Task DeleteOrderAsync(int id)
+        public async Task DeleteOrderAsync(int id, string role, string currentUserId)
         {
             try
             {
                 var order = await _context.Orders.FindAsync(id);
                 if (order == null) throw new KeyNotFoundException($"Order with ID {id} not found");
 
+                if (role.Equals("Customer", StringComparison.OrdinalIgnoreCase) && order.AppUserId != currentUserId)
+                    throw new UnauthorizedAccessException("Customers can only delete their own orders");
+
                 _context.Orders.Remove(order);
                 await _context.SaveChangesAsync();
 
-                // Invalidate cache
-                _cache.Remove("AllOrders");
-                _cache.Remove($"Order_{id}");
+                _cache.Remove("AllOrders_Admin_all");
+                _cache.Remove($"AllOrders_Customer_{order.AppUserId}");
+                _cache.Remove($"Order_{id}_Admin_all");
+                _cache.Remove($"Order_{id}_Customer_{order.AppUserId}");
             }
             catch (Exception ex)
             {

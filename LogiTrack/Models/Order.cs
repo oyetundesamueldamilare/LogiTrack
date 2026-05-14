@@ -3,10 +3,12 @@
     public class Order
     {
         public int OrderId { get; set; }
-        public string CustomerName { get; set; } = string.Empty;
+        public AppUser? AppUser { get; set; } 
+        public string AppUserId {  get; set; }
+        public decimal TotalPrice { get; set; }
         public DateTime OrderDate { get; set; }
-        public string OrderStatus { get; set; }    = string.Empty;
+        public OrderStatus OrderStatus { get; set; } = OrderStatus.Pending;
         public List<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
-
     }
+
 }

@@ -86,17 +86,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/InventoryItemDto"
+                "$ref": "#/components/schemas/InventoryItemDTO"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/InventoryItemDto"
+                "$ref": "#/components/schemas/InventoryItemDTO"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/InventoryItemDto"
+                "$ref": "#/components/schemas/InventoryItemDTO"
               }
             }
           }
@@ -149,17 +149,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/InventoryItemDto"
+                "$ref": "#/components/schemas/InventoryItemDTO"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/InventoryItemDto"
+                "$ref": "#/components/schemas/InventoryItemDTO"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/InventoryItemDto"
+                "$ref": "#/components/schemas/InventoryItemDTO"
               }
             }
           }
@@ -211,17 +211,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/OrderDto"
+                "$ref": "#/components/schemas/OrderCreateDTO"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/OrderDto"
+                "$ref": "#/components/schemas/OrderCreateDTO"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/OrderDto"
+                "$ref": "#/components/schemas/OrderCreateDTO"
               }
             }
           }
@@ -274,17 +274,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/OrderDto"
+                "$ref": "#/components/schemas/OrderCreateDTO"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/OrderDto"
+                "$ref": "#/components/schemas/OrderCreateDTO"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/OrderDto"
+                "$ref": "#/components/schemas/OrderCreateDTO"
               }
             }
           }
@@ -310,6 +310,48 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Order/{orderId}/items": {
+      "post": {
+        "tags": [
+          "Order"
+        ],
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderItemCreateDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderItemCreateDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderItemCreateDTO"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -351,7 +393,7 @@
   },
   "components": {
     "schemas": {
-      "InventoryItemDto": {
+      "InventoryItemDTO": {
         "type": "object",
         "properties": {
           "itemId": {
@@ -373,6 +415,10 @@
           "quantity": {
             "type": "integer",
             "format": "int32"
+          },
+          "unitPrice": {
+            "type": "number",
+            "format": "double"
           }
         },
         "additionalProperties": false
@@ -391,46 +437,26 @@
         },
         "additionalProperties": false
       },
-      "OrderDto": {
+      "OrderCreateDTO": {
         "type": "object",
         "properties": {
-          "orderId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "customerName": {
-            "type": "string",
-            "nullable": true
-          },
           "orderDate": {
             "type": "string",
             "format": "date-time"
           },
-          "orderStatus": {
-            "type": "string",
-            "nullable": true
-          },
-          "orderItems": {
+          "items": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/OrderItemDto"
+              "$ref": "#/components/schemas/OrderItemCreateDTO"
             },
             "nullable": true
           }
         },
         "additionalProperties": false
       },
-      "OrderItemDto": {
+      "OrderItemCreateDTO": {
         "type": "object",
         "properties": {
-          "orderItemId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "itemId": {
-            "type": "integer",
-            "format": "int32"
-          },
           "itemName": {
             "type": "string",
             "nullable": true

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LogiTrack")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+198e80b33e782ac5765d586b0af0dd757a7de934")]
 [assembly: System.Reflection.AssemblyProductAttribute("LogiTrack")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LogiTrack")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
+﻿using LogiTrack.Data;
 using LogiTrack.Dto;
 using LogiTrack.Interfaces;
 using LogiTrack.Models;
-using LogiTrack.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace LogiTrack.Repository
 {
@@ -13,6 +13,8 @@ namespace LogiTrack.Repository
         private readonly AppDbContext _context;
         private readonly IMemoryCache _cache;
 
+        private const string AllItemsCacheKey = "AllInventoryItems";
+
         public InventoryRepository(ILogger<InventoryRepository> logger, AppDbContext context, IMemoryCache cache)
         {
             _logger = logger;
@@ -20,27 +22,33 @@ namespace LogiTrack.Repository
             _cache = cache;
         }
 
-        public async Task<IEnumerable<InventoryItemDto>> GetAllInventoryItemsAsync()
+        private static InventoryItemDTO MapToDto(InventoryItem item) =>
+            new InventoryItemDTO
+            {
+                ItemId = item.ItemId,
+                Name = item.Name,
+                Quantity = item.Quantity,
+                Location = item.Location,
+                UnitPrice = item.UnitPrice
+            };
+
+        public async Task<IEnumerable<InventoryItemDTO>> GetAllInventoryItemsAsync()
         {
             try
             {
-                if (_cache.TryGetValue("AllInventoryItems", out IEnumerable<InventoryItemDto> cachedItems))
+                if (_cache.TryGetValue(AllItemsCacheKey, out IEnumerable<InventoryItemDTO> cachedItems))
                 {
                     return cachedItems;
                 }
 
                 var items = await _context.InventoryItems
-                    .AsNoTracking() // Query optimization
-                    .Select(item => new InventoryItemDto
-                    {
-                        ItemId = item.ItemId,
-                        Name = item.Name,
-                        Quantity = item.Quantity,
-                        Location = item.Location,
-                    }).ToListAsync();
+                    .AsNoTracking()
+                    .ToListAsync();
 
-                _cache.Set("AllInventoryItems", items, TimeSpan.FromMinutes(5));
-                return items;
+                var itemDtos = items.Select(MapToDto).ToList();
+
+                _cache.Set(AllItemsCacheKey, itemDtos, TimeSpan.FromMinutes(5));
+                return itemDtos;
             }
             catch (Exception ex)
             {
@@ -49,29 +57,23 @@ namespace LogiTrack.Repository
             }
         }
 
-        public async Task<InventoryItemDto?> GetInventoryItemByIdAsync(int id)
+        public async Task<InventoryItemDTO?> GetInventoryItemByIdAsync(int id)
         {
             try
             {
                 var cacheKey = $"InventoryItem_{id}";
-                if (_cache.TryGetValue(cacheKey, out InventoryItemDto cachedItem))
+                if (_cache.TryGetValue(cacheKey, out InventoryItemDTO cachedItem))
                 {
                     return cachedItem;
                 }
 
                 var item = await _context.InventoryItems
-                    .AsNoTracking() // Query optimization
+                    .AsNoTracking()
                     .FirstOrDefaultAsync(i => i.ItemId == id);
 
                 if (item == null) return null;
 
-                var itemDto = new InventoryItemDto
-                {
-                    ItemId = item.ItemId,
-                    Name = item.Name,
-                    Quantity = item.Quantity,
-                    Location = item.Location,
-                };
+                var itemDto = MapToDto(item);
 
                 _cache.Set(cacheKey, itemDto, TimeSpan.FromMinutes(10));
                 return itemDto;
@@ -83,7 +85,7 @@ namespace LogiTrack.Repository
             }
         }
 
-        public async Task AddInventoryItemAsync(InventoryItemDto itemDto)
+        public async Task AddInventoryItemAsync(InventoryItemDTO itemDto)
         {
             try
             {
@@ -92,13 +94,13 @@ namespace LogiTrack.Repository
                     Name = itemDto.Name,
                     Quantity = itemDto.Quantity,
                     Location = itemDto.Location,
+                    UnitPrice = itemDto.UnitPrice
                 };
 
                 _context.InventoryItems.Add(item);
                 await _context.SaveChangesAsync();
 
-                // Invalidate cache
-                _cache.Remove("AllInventoryItems");
+                _cache.Remove(AllItemsCacheKey);
             }
             catch (Exception ex)
             {
@@ -107,7 +109,7 @@ namespace LogiTrack.Repository
             }
         }
 
-        public async Task UpdateInventoryItemAsync(int id, InventoryItemDto itemDto)
+        public async Task UpdateInventoryItemAsync(int id, InventoryItemDTO itemDto)
         {
             try
             {
@@ -117,11 +119,11 @@ namespace LogiTrack.Repository
                 item.Name = itemDto.Name;
                 item.Quantity = itemDto.Quantity;
                 item.Location = itemDto.Location;
+                item.UnitPrice = itemDto.UnitPrice;
 
                 await _context.SaveChangesAsync();
 
-                // Invalidate cache
-                _cache.Remove("AllInventoryItems");
+                _cache.Remove(AllItemsCacheKey);
                 _cache.Remove($"InventoryItem_{id}");
             }
             catch (Exception ex)
@@ -141,8 +143,7 @@ namespace LogiTrack.Repository
                 _context.InventoryItems.Remove(item);
                 await _context.SaveChangesAsync();
 
-                // Invalidate cache
-                _cache.Remove("AllInventoryItems");
+                _cache.Remove(AllItemsCacheKey);
                 _cache.Remove($"InventoryItem_{id}");
             }
             catch (Exception ex)
