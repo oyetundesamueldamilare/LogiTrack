@@ -162,3 +162,6 @@ C:\Users\dell\Desktop\ProjectCS\LogiTrack\LogiTrack\obj\Debug\net10.0\staticweba
 C:\Users\dell\Desktop\ProjectCS\LogiTrack\LogiTrack\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\dell\Desktop\ProjectCS\LogiTrack\LogiTrack\bin\Debug\net10.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
 C:\Users\dell\Desktop\ProjectCS\LogiTrack\LogiTrack\obj\Debug\net10.0\LogiTrack.sourcelink.json
+C:\Users\dell\Desktop\ProjectCS\LogiTrack\LogiTrack\bin\Debug\net10.0\BouncyCastle.Cryptography.dll
+C:\Users\dell\Desktop\ProjectCS\LogiTrack\LogiTrack\bin\Debug\net10.0\MailKit.dll
+C:\Users\dell\Desktop\ProjectCS\LogiTrack\LogiTrack\bin\Debug\net10.0\MimeKit.dll

@@ -1,7 +1,5 @@
 ﻿using LogiTrack.Dto;
-using LogiTrack.Models;
-using LogiTrack.Services;
-using Microsoft.AspNetCore.Identity;
+using LogiTrack.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LogiTrack.Controllers
@@ -10,65 +8,64 @@ namespace LogiTrack.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly UserManager<AppUser> _userManager;
-        private readonly IJwtTokenService _jwtTokenService;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IAuthService _authService;
 
-        public AuthController(
-            UserManager<AppUser> userManager,
-            IJwtTokenService jwtTokenService,
-            RoleManager<IdentityRole> roleManager)
+        public AuthController(IAuthService authService)
         {
-            _userManager = userManager;
-            _jwtTokenService = jwtTokenService;
-            _roleManager = roleManager;
+            _authService = authService;
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto model)
         {
-            if (model == null) return BadRequest("Invalid user data.");
-
-            if (!await _roleManager.RoleExistsAsync(model.Role))
-                return BadRequest($"Role '{model.Role}' does not exist.");
-
-            var user = new AppUser
+            try
             {
-                UserName = model.Email,
-                Email = model.Email
-            };
-
-            var result = await _userManager.CreateAsync(user, model.Password);
-            if (!result.Succeeded)
-            {
-                var errors = string.Join(", ", result.Errors.Select(e => e.Description));
-                return BadRequest($"User registration failed: {errors}");
+                var result = await _authService.RegisterAsync(model);
+                return Ok(result);
             }
-
-            var roleResult = await _userManager.AddToRoleAsync(user, model.Role);
-            if (!roleResult.Succeeded)
+            catch (Exception ex)
             {
-                var errors = string.Join(", ", roleResult.Errors.Select(e => e.Description));
-                return BadRequest($"Failed to assign role: {errors}");
+                return BadRequest(ex.Message);
             }
-
-            return Ok("User registered successfully.");
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto model)
         {
-            if (model == null) return BadRequest("Invalid login data.");
-
-            var user = await _userManager.FindByEmailAsync(model.Email);
-            if (user == null || !await _userManager.CheckPasswordAsync(user, model.Password))
+            try
             {
-                return Unauthorized("Invalid email or password.");
+                var token = await _authService.LoginAsync(model);
+                return Ok(new { Token = token });
             }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
-            var token = await _jwtTokenService.GenerateTokenAsync(user);
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword([FromBody] string email)
+        {
+            await _authService.ForgotPasswordAsync(email);
+            return Ok("If that email is registered, a reset link has been sent.");
+        }
 
-            return Ok(new { Token = token });
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto model)
+        {
+            try
+            {
+                await _authService.ResetPasswordAsync(model);
+                return Ok("Password reset successful.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

@@ -33,11 +33,15 @@ builder.Services.AddIdentity<AppUser, IdentityRole>()
 builder.Services.AddScoped<IInvoiceService, InvoiceService>();
 builder.Services.AddHostedService<InvoiceBackgroundWorker>();
 
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 
 // --- Dependency Injection for Repositories ---
+builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 // --- JWT Authentication ---
 builder.Services.AddAuthentication(options =>
